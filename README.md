@@ -9,6 +9,7 @@ libraries, including gumbo.
 * Small: Focussed feature-set *only* for retrieving elements from HTML trees
 * Customisable: Allows compile-time toggling of HTML library support
 * Support CSS 3 (including the deprecated `:contains()`)
+* Support selections on streaming HTML parsers (e.g., SAX parsers)
 
 ## Implementation notes
 
