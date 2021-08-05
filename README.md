@@ -29,15 +29,43 @@ char *selector = ...;
 
 MyTree *tree = mytree_parse(html);
 MyTree *root = mytree_getroot(tree);
-// Wraps into a struct that stores the library's tag (some internal enum).
-dumbo_tree dtree = DUMBO_TREE_WRAP_MYTREE(root);
+
+// Wrapped to store the tree, the library's tag (some internal enum), and
+// library-specific context data for the current execution of the css selection.
+dumbo_ctx ctx = DUMBO_CTX_WRAP_MYTREE(root);
 dumbo_css *css = dumbo_css_parse(selector);
 
 MyTree *node;
-while (dumbo_css_exec(css, &dtree, &node) == 0) {
+while (dumbo_css_exec(css, &ctx, &node) == 0) {
 	// ...
 }
+
 // ...
+
+// Execute again on different css selector (with the same tree).
+dumbo_css_free(css);
+selector = ...;
+css = dumbo_css_parse(selector);
+// Reuse the current context.
+DUMBO_CTX_RESET_MYTREE(ctx);
+while (dumbo_css_exec(css, &ctx, &node) == 0) {
+	// ...
+}
+
+// ...
+
+// Execute with different *tree* but the same selector.
+mytree_free(tree);
+html = ...;
+tree = mytree_parse(html);
+root = mytree_getroot(tree);
+ctx = DUMBO_CTX_WRAP_MYTREE(root);
+while (dumbo_css_exec(css, &ctx, &node) == 0) {
+	// ...
+}
+
+// ...
+
 dumbo_css_free(css);
 mytree_free(tree);
 ```
