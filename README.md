@@ -8,14 +8,15 @@ libraries, including gumbo.
 * Portable: Uses C99 and autotools
 * Small: Focussed feature-set *only* for retrieving elements from HTML trees
 * Customisable: Allows compile-time toggling of HTML library support
-* Support CSS 3 (including the deprecated `:contains()`)
+* Support CSS 3 (including the deprecated `:contains()` and non-standard
+  `::attr(name)`)
 * Support selections on streaming HTML parsers (e.g., SAX parsers)
 
 ## Implementation notes
 
 As much as possible, `dumbo` shouldn't do any allocations.  So, the API for
-executing selectors should be an iterator interface, and take `void *` since
-client code should know what kind of tree they have (and thus, node type).
+executing selectors should be an iterator interface, and take `void **` since
+client code should know what kind of tree they have (and thus, node type or te).
 Upon match, the library should just modify the out parameter to point to the
 element.
 
